@@ -1,7 +1,6 @@
 package com.example.config;
 
 import com.example.spring.aspect.SystemLogAspect;
-import com.example.spring.interceptor.InterceptorA;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.ExecutorType;
@@ -17,9 +16,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -33,6 +32,7 @@ import java.util.Properties;
  */
 @Configuration
 @EnableAutoConfiguration
+@EnableAsync
 @EnableSwagger2
 @EnableWebMvc
 //@EnableRedisHttpSession
@@ -40,6 +40,8 @@ import java.util.Properties;
         "com.example.services",
         "com.example.exception",
         "com.example.spring",
+        "com.example.metrics",
+        "com.example.thread",
         "com.example.spring.aspect"})
 @MapperScan(basePackages = "com.example.mappers")
 //@ServletComponentScan(basePackages = "com.example.spring") //配置servlet
@@ -148,4 +150,6 @@ public class ApplicationConfig extends WebMvcConfigurerAdapter {
 //    public HttpSessionStrategy httpSessionStrategy() {
 //        return new HeaderHttpSessionStrategy();
 //    }
+
+
 }

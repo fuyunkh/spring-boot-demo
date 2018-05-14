@@ -60,7 +60,7 @@ public class OfficeUtil {
         excel2Pdf(srcFile, targetFile, null);
     }
 
-    public static void excel2Pdf(String srcFile, String targetFile, String fontPath) throws Exception {
+    public static void excel2Pdf(String srcFile, String targetFile, String fontPath) throws Exception{
         if (!getLicense()) {
             return;
         }
@@ -228,10 +228,20 @@ public class OfficeUtil {
         }
     }
 
-    public static void setExcelFont(String fontPath) throws Exception {
+    public static void setExcelFont(String fontPath) {
         if (!Strings.isNullOrEmpty(fontPath)) {
 //            CellsHelper.setFontDir(pdfFontPath);
             FontConfigs.setFontFolder(fontPath, false);
+        }
+    }
+
+    public static void main(String[] args) {
+        String srcFile = "G:\\QQ Files\\livebos控件类型映射对比.xls";
+        String targetFile = "G:\\QQ Files\\livebos控件类型映射对比.pdf";
+        try {
+            excel2Pdf(srcFile, targetFile);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -51,8 +51,8 @@ public class JsonUtil {
         try {
             return mapper.readValue(json, t);
         } catch (Exception e) {
-            logger.info("Cannot parse json string to Object. Json: <"
-                    + json + ">, Object class: <" + t.getName() + ">.", e);
+            logger.info("Cannot parse json string to Object. Json: <" +
+                    json + ">, Object class: <" + t.getName() + ">.", e);
         }
         return null;
     }
@@ -92,8 +92,7 @@ public class JsonUtil {
         try {
             return mapper.readValue(toJsonString(map), t);
         } catch (Exception e) {
-            logger.info("Cannot parse map to Object. Map: <"
-                    + map + ">, Object class: <" + t.getName() + ">.", e);
+            logger.info("Cannot parse map to Object. Map: <{}>, Object class: <{}>.{}", map, t.getName(), e);
         }
         return null;
     }

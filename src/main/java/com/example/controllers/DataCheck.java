@@ -48,8 +48,8 @@ public class DataCheck {
     }
 
     public static void check() {
-        int i =1;
-        for ( i = 1; i < 100; i++) {
+        int i = 1;
+        for (i = 1; i < 100; i++) {
             if (checkdata(i) == 0) {
                 break;
             }

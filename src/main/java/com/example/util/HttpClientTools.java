@@ -31,8 +31,8 @@ import java.security.cert.X509Certificate;
  * apache HttpClients版本：4.5
  */
 public class HttpClientTools {
-    protected final static Logger logger = LoggerFactory.getLogger(HttpClientTools.class);
-    protected final static int timeout = 15 * 1000;   //默认15秒
+    protected static final  Logger logger = LoggerFactory.getLogger(HttpClientTools.class);
+    protected static final  int timeout = 15 * 1000;   //默认15秒
 
 
     public static Boolean isSuccess(int status) {

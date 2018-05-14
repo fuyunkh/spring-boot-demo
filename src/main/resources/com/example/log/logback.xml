@@ -134,20 +134,24 @@
 
     <!-- com.example包使用debug日志-->
     <logger name="com.example">
-        <level value="DEBUG"/>
+        <level value="INFO"/>
+    </logger>
+
+    <logger name="org.apache.http">
+        <level value="INFO"/>
     </logger>
 
     <!-- root级别   DEBUG -->
     <root>
         <!-- 打印debug级别日志及以上级别日志 -->
-        <level value="DEBUG"/>
+        <level value="INFO"/>
         <!-- 控制台输出 -->
-        <appender-ref ref="CONSOLE"/>
+        <!--<appender-ref ref="CONSOLE"/>-->
         <!-- 文件输出 -->
-        <appender-ref ref="ERROR"/>
-        <appender-ref ref="INFO"/>
+        <!--<appender-ref ref="ERROR"/>-->
+        <!--<appender-ref ref="INFO"/>-->
         <!--<appender-ref ref="WARN"/>-->
-        <appender-ref ref="DEBUG"/>
+        <!--<appender-ref ref="DEBUG"/>-->
         <!--<appender-ref ref="TRACE"/>-->
     </root>
 

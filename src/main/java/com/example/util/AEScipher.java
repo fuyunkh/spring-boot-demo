@@ -39,19 +39,19 @@ public final class AEScipher {
     }
 
     public static String encryptAES(String data, String key) {
-        return cipherAES(data, key, Cipher.ENCRYPT_MODE,null);
+        return cipherAES(data, key, Cipher.ENCRYPT_MODE, null);
     }
 
     public static String decryptAES(String data, String key) {
-        return cipherAES(data, key, Cipher.DECRYPT_MODE,null);
+        return cipherAES(data, key, Cipher.DECRYPT_MODE, null);
     }
 
-    public static String encryptAES(String data, String key,AlgorithmParameterSpec paramSpec) {
-        return cipherAES(data, key, Cipher.ENCRYPT_MODE,paramSpec);
+    public static String encryptAES(String data, String key, AlgorithmParameterSpec paramSpec) {
+        return cipherAES(data, key, Cipher.ENCRYPT_MODE, paramSpec);
     }
 
-    public static String decryptAES(String data, String key,AlgorithmParameterSpec paramSpec) {
-        return cipherAES(data, key, Cipher.DECRYPT_MODE,paramSpec);
+    public static String decryptAES(String data, String key, AlgorithmParameterSpec paramSpec) {
+        return cipherAES(data, key, Cipher.DECRYPT_MODE, paramSpec);
     }
 
 
@@ -70,8 +70,8 @@ public final class AEScipher {
 
     private static String cipherAES(String data, String key, int mode, AlgorithmParameterSpec paramSpec) {
         Key k = toKey(key, KEY_AES);
-        if(paramSpec == null) {
-             paramSpec = new IvParameterSpec(k.getEncoded(), 0, AES_IV_LENGTH);
+        if (paramSpec == null) {
+            paramSpec = new IvParameterSpec(k.getEncoded(), 0, AES_IV_LENGTH);
         }
         try {
             Cipher ecipher = Cipher.getInstance(ALGORITHM_AES);

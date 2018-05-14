@@ -3,7 +3,6 @@ package com.example.util;
 import org.apache.commons.codec.binary.Base64;
 
 public final class TranscodeUtil {
-    static final String GENERATE_AES_KEY_FAILED = "generateAESKeyFailed";
 
     private TranscodeUtil() {
     }
@@ -16,7 +15,7 @@ public final class TranscodeUtil {
         return new String(Base64.decodeBase64(base64Str));
     }
 
-    public static String byteArrayToBase64Str(byte byteArray[]) {
+    public static String byteArrayToBase64Str(byte[] byteArray) {
         return new String(Base64.encodeBase64(byteArray));
     }
 

@@ -23,16 +23,17 @@ public final class Encipher {
 
 
     public static String decrypt(String encryptionText) {
-       byte[] randomIV = Arrays.copyOf(TranscodeUtil.base64StrToByteArray(encryptionText), 16);
-       String encryptionRealText = encryptionText.substring(TranscodeUtil.byteArrayToBase64Str(randomIV).length());
-       return AEScipher.decryptAES(encryptionRealText, AEScipher.generateAESKey(KEY_LENGTH, SEED),new IvParameterSpec(randomIV, 0, AEScipher.AES_IV_LENGTH));
+        byte[] randomIV = Arrays.copyOf(TranscodeUtil.base64StrToByteArray(encryptionText), 16);
+        String encryptionRealText = encryptionText.substring(TranscodeUtil.byteArrayToBase64Str(randomIV).length());
+        return AEScipher.decryptAES(encryptionRealText, AEScipher.generateAESKey(KEY_LENGTH, SEED),
+                new IvParameterSpec(randomIV, 0, AEScipher.AES_IV_LENGTH));
     }
-
 
 
     public static String encrypt(String plaintText) {
         byte[] randomIV = AEScipher.genereteRandomIV();
-        return TranscodeUtil.byteArrayToBase64Str(randomIV) +  AEScipher.encryptAES(plaintText, AEScipher.generateAESKey(KEY_LENGTH, SEED),new IvParameterSpec(randomIV, 0, AEScipher.AES_IV_LENGTH));
+        return TranscodeUtil.byteArrayToBase64Str(randomIV) + AEScipher.encryptAES(plaintText, AEScipher.generateAESKey(KEY_LENGTH, SEED),
+                new IvParameterSpec(randomIV, 0, AEScipher.AES_IV_LENGTH));
     }
 
 
@@ -41,12 +42,13 @@ public final class Encipher {
         if (args.length != 2) {
             printUsage(out);
             System.out.println(encryptPwd("docker"));
-            System.out.println(decrypt("rAy7jqr5DfmjE8OTcAdfNA==p5EXq/DoU54EkVy1lmi2kg=="));
+            System.out.println(decryptPwd("k6mdRv2jrjSTmkO9Mw6e7A=="));
+            System.out.println(decrypt("pADsqZfBkG1ZD3jmCeEd4g==sO8FTzSuAfCv4A3PWFAjHg=="));
             System.exit(1);
         }
-			String methodName = args[0];
-			Method m = Encipher.class.getMethod(methodName, String.class);
-			out.println(m.invoke(null,args[1]));
+        String methodName = args[0];
+        Method m = Encipher.class.getMethod(methodName, String.class);
+        out.println(m.invoke(null, args[1]));
     }
 
     public static void printUsage(PrintStream out) {

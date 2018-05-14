@@ -22,7 +22,7 @@ import java.util.Date;
  * Description：DES加密解密工具类
  */
 public class EncryptUtil {
-    private static final Logger logger = LoggerFactory.getLogger(EncryptUtil.class);
+    private static  Logger logger = LoggerFactory.getLogger(EncryptUtil.class);
     private static int TOKEN_VALID_TIME = 60 * 1000; //单位是毫秒
 
     static {
@@ -85,7 +85,7 @@ public class EncryptUtil {
      * @return
      */
     private static byte[] convertHexString(String ss) throws Exception {
-        byte digest[] = new byte[ss.length() / 2];
+        byte[] digest = new byte[ss.length() / 2];
         for (int i = 0; i < digest.length; i++) {
             String byteString = ss.substring(2 * i, 2 * i + 2);
             int byteValue = Integer.parseInt(byteString, 16);
@@ -101,7 +101,7 @@ public class EncryptUtil {
      * @return
      * @throws Exception
      */
-    private static String toHexString(byte b[]) throws Exception {
+    private static String toHexString(byte[] b) throws Exception {
         StringBuffer hexString = new StringBuffer();
         for (int i = 0; i < b.length; i++) {
             String plainText = Integer.toHexString(0xff & b[i]);
@@ -165,7 +165,7 @@ public class EncryptUtil {
     public static String getToken(String id) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dt = formatter.format(new Date());
-        String token = id + "&" + dt;//+ "&M0010";
+        String token = id + "&" + dt;  //+ "&M0010";
         return encrypt(token, "1q2w3e4r");
     }
 

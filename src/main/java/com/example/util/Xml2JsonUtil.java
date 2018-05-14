@@ -1,16 +1,13 @@
 package com.example.util;
 
 
-
-
-
 import static org.apache.coyote.http11.Constants.a;
 
 /**
  * Created by Zhangkh on 2017/12/9.
  */
 public class Xml2JsonUtil {
-//    private static final TerseJson.WhitespaceBehaviour COMPACT_WHITE_SPACE = TerseJson.WhitespaceBehaviour.Compact;
+    //    private static final TerseJson.WhitespaceBehaviour COMPACT_WHITE_SPACE = TerseJson.WhitespaceBehaviour.Compact;
     public static void main(String[] args) throws Exception {
 
 //        String str = "<?xml version=\"1.0\" encoding=\"utf-8\"?><AuditRecords><Record><State>0</State><Msg>此项待办任务已完成、终止或暂停，不能被执行。</Msg></Record></AuditRecords>";
@@ -18,8 +15,7 @@ public class Xml2JsonUtil {
         System.out.println(JsonUtil.toJsonString(a));
     }
 
-    public static void test()
-    {
+    public static void test() {
         String xmlString;  // some XML String previously created
 //        XmlToJson xmlToJson = new XmlToJson.Builder(xmlString).build();
     }

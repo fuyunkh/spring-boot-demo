@@ -23,12 +23,13 @@ public class EncodeClass {
         }
         return des;
     }
-    public static String enCode(String salt,String password){
-        if(salt ==null ){
-            salt="";
+
+    public static String enCode(String salt, String password) {
+        if (salt == null) {
+            salt = "";
         }
-        if(password ==null ){
-            password="";
+        if (password == null) {
+            password = "";
         }
         MessageDigest md = null;
         try {
@@ -39,12 +40,13 @@ public class EncodeClass {
         md.update(salt.getBytes());
         return bytes2Hex(md.digest(password.getBytes()));
     }
-    public static String enCodeBase64(String salt,String password){
-        if(salt ==null ){
-            salt="";
+
+    public static String enCodeBase64(String salt, String password) {
+        if (salt == null) {
+            salt = "";
         }
-        if(password ==null ){
-            password="";
+        if (password == null) {
+            password = "";
         }
         MessageDigest md = null;
         try {
@@ -56,15 +58,15 @@ public class EncodeClass {
         return Base64.getUrlEncoder().encodeToString(md.digest(password.getBytes()));
     }
 
-    public static String getSalt32(){
+    public static String getSalt32() {
         return RandomStringUtils.randomAlphanumeric(32);
     }
 
 
-    public  static String MD5(String pwd) {
+    public static String md5(String pwd) {
         //用于加密的字符
-        char md5String[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                'a', 'b', 'c', 'd', 'e', 'f' };
+        char[] md5String = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'a', 'b', 'c', 'd', 'e', 'f'};
         try {
             //使用平台的默认字符集将此 String 编码为 byte序列，并将结果存储到一个新的 byte数组中
             byte[] btInput = pwd.getBytes();
@@ -76,7 +78,7 @@ public class EncodeClass {
             byte[] md = mdInst.digest();
             // 把密文转换成十六进制的字符串形式
             int j = md.length;
-            char str[] = new char[j * 2];
+            char[] str = new char[j * 2];
             int k = 0;
             for (int i = 0; i < j; i++) {   //  i = 0
                 byte byte0 = md[i];  //95
@@ -90,9 +92,9 @@ public class EncodeClass {
         }
     }
 
-    public static void main(String args[]) {
-       System.out.print(EncodeClass.enCode("123!@#", "456qaz"));
+    public static void main(String[] args) {
+        System.out.print(EncodeClass.enCode("123!@#", "456qaz"));
         System.out.print(EncodeClass.enCode("", ""));
-        System.out.print(EncodeClass.MD5("123456"));
+        System.out.print(EncodeClass.md5("123456"));
     }
 }

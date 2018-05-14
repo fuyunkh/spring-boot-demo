@@ -1,9 +1,10 @@
 package com.example.controllers;
 
 
-import com.example.annotation.CustomLog;
+import com.codahale.metrics.annotation.Timed;
 import com.example.entity.User;
 import com.example.services.UserService;
+import com.example.thread.ThreadDemo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -20,11 +21,14 @@ import java.util.List;
 /**
  * Created by Zhangkh on 2017/3/6.
  */
+@Timed
 @RestController(value = "userController")
 @RequestMapping(value = "/v1", produces = {"application/json", "application/xml"})
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private ThreadDemo threadDemo;
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -52,19 +56,26 @@ public class UserController {
         userService.getData(grade);
     }
 
-    @CustomLog(operationType = "check:", userName = "添加用户")
+//        @Metered
+//    @CustomLog(operationType = "check:", userName = "添加用户")
     @RequestMapping(value = "/check", method = RequestMethod.GET)
     public void check() {
-//        userService.check();
+        threadDemo.test();
         logger.info("测试自定注解");
     }
 
+//    @Timed
+//    @Metered
     @RequestMapping(value = "/data", method = RequestMethod.POST)
     @ApiOperation(notes = "getPerSon", httpMethod = "POST", value = "get person")
     public List<User> postUrlData(@RequestParam(value = "name", required = false) String userName) {
+        long start = System.currentTimeMillis();
         logger.info("request " + userName);
 //        return userService.get(userName);
-        throw new RuntimeException("getPerSon 异常");
+//        throw new RuntimeException("getPerSon 异常");
+        System.out.println("timed test");
+        System.out.println(System.currentTimeMillis() -start);
+        return null;
     }
 
 
