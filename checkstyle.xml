@@ -23,7 +23,7 @@
         <!--  常量大小写开头都可以   -->
         <module name="ConstantName">
             <property name="format"
-                      value="^log(ger)?||[A-z][A-Z0-9]*(_[A-Z0-9]+)*$"/>
+                      value="^log(ger)?||[A-Z0-9]*(_[A-Z0-9]+)*$"/>
         </module>
 
 
@@ -41,8 +41,8 @@
         <module name="PackageName"/>
 
         <module name="ParameterName"/>
-
         <module name="StaticVariableName"/>
+
 
         <module name="TypeName"/>
         <!--命名 end-->

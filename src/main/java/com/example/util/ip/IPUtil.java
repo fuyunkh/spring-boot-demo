@@ -1,8 +1,6 @@
 package com.example.util.ip;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
+import java.net.*;
 import java.util.Enumeration;
 import java.util.regex.Pattern;
 
@@ -11,7 +9,7 @@ import java.util.regex.Pattern;
  */
 public class IPUtil {
 
-    public static String getLocalHostLANAddress() {
+    public static String getLocalIPAddress() {
         try {
             InetAddress candidateAddress = null;
             // 遍历所有的网络接口
@@ -21,11 +19,12 @@ public class IPUtil {
                 // 在所有的接口下再遍历IP
                 for (Enumeration inetAddrs = iface.getInetAddresses(); inetAddrs.hasMoreElements(); ) {
                     InetAddress inetAddr = (InetAddress) inetAddrs.nextElement();
-                    if (!inetAddr.isLoopbackAddress()) {// 排除loopback类型地址
+                    // 排除loopback类型地址
+                    if (!inetAddr.isLoopbackAddress() && inetAddr instanceof Inet4Address) {
                         if (inetAddr.isSiteLocalAddress()) {
                             // 如果是site-local地址，就是它了
-                            System.out.println("ip:" + inetAddr.getHostAddress());
-                            return inetAddr.getHostAddress();
+                            System.out.println(inetAddr.getHostAddress());
+//                            return inetAddr.getHostAddress();
                         } else if (candidateAddress == null) {
                             // site-local类型的地址未被发现，先记录候选地址
                             candidateAddress = inetAddr;
@@ -38,12 +37,11 @@ public class IPUtil {
             }
             // 如果没有发现 non-loopback地址.只能用最次选的方案
             InetAddress jdkSuppliedAddress = InetAddress.getLocalHost();
-//            jdkSuppliedAddress.getHostAddress();
             return jdkSuppliedAddress.getHostAddress();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return "127.0.0.1";
     }
 
 
@@ -84,7 +82,7 @@ public class IPUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(IPUtil.getLocalHostLANAddress());
+        System.out.println(getLocalIPAddress());
 //        getallIP();
 
     }

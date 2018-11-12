@@ -1,4 +1,11 @@
 package com.example.metrics;
+//
+//import com.codahale.metrics.ConsoleReporter;
+//import com.codahale.metrics.MetricFilter;
+//import com.codahale.metrics.MetricRegistry;
+
+//import com.codahale.metrics.ConsoleReporter;
+//import com.codahale.metrics.MetricRegistry;
 
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricFilter;
@@ -23,17 +30,17 @@ public class MetricsConfig extends MetricsConfigurerAdapter {
     public void configureReporters(MetricRegistry metricRegistry) {
         // registerReporter allows the MetricsConfigurerAdapter to
         // shut down the reporter when the Spring context is closed
-        registerReporter(ConsoleReporter
-                .forRegistry(metricRegistry)
-                .build())
-                .start(1, TimeUnit.MINUTES);
+//        registerReporter(ConsoleReporter
+//                .forRegistry(metricRegistry)
+//                .build())
+//                .start(1, TimeUnit.MINUTES);
 
         registerReporter(InfluxdbReporter
                 .forRegistry(metricRegistry)
                 .protocol(new HttpInfluxdbProtocol("http", "10.29.37.123", 8086, "metrics", "123456", "metrics"))
                 .filter(MetricFilter.ALL)
                 .tag("app", "taskcenter")
-                .tag("host", IPUtil.getLocalHostLANAddress())
+                .tag("host", IPUtil.getLocalIPAddress())
                 .build())
                 .start(1, TimeUnit.MINUTES);
 

@@ -24,7 +24,7 @@ public class FilterA implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         logger.info("In FilterA");
-        HttpServletRequest req = (HttpServletRequest)servletRequest ;
+        HttpServletRequest req = (HttpServletRequest) servletRequest;
 
         logger.info("x-auth-token:" + req.getHeader("x-auth-token"));
 //        Cookie[] cookies = req.getCookies();

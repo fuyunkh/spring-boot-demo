@@ -2,6 +2,8 @@ package com.example.util.office;
 
 import com.aspose.words.Document;
 
+import java.io.File;
+
 
 /**
  * Created by Zhangkh on 2018/3/29.
@@ -26,21 +28,15 @@ public class Doc2PDF {
         System.out.println("\nDocument converted to PDF successfully.\nFile saved at " + dataDir);
     }
 
-    public static void test1() {
-        String path = "C:\\Users\\Zhangkh\\Desktop\\";
-        String srcFile = path + "蜂巢微信版建设方案.docx";
-        String targetFile = path + "17.pdf";
-        try {
-            OfficeUtil.setConfig(false, null);
-            OfficeUtil.doc2Pdf(srcFile, targetFile);
-//            OfficeUtil.excel2pdf(srcFile, targetFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-    }
 
     public static void main(String[] args) throws Exception {
-        test1();
+        String targetFile = "F:\\04 集成信息管理平台\\待办中心\\接口文档\\常用字典项.pdf";
+//        String a = new File(targetFile).getParentFile().getAbsolutePath();
+        int idx = targetFile.lastIndexOf(".");
+
+        String suffix = targetFile.substring(idx + 1);
+        System.out.println(suffix);
+
     }
 }

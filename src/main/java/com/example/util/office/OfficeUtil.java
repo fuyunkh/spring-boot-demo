@@ -1,14 +1,19 @@
 package com.example.util.office;
 
-import com.aspose.cells.FontConfigs;
 import com.aspose.cells.PdfSecurityOptions;
 import com.aspose.cells.Workbook;
 import com.aspose.cells.Worksheet;
+import com.aspose.pdf.*;
 import com.aspose.words.*;
-import com.google.common.base.Strings;
+import com.aspose.words.Document;
+//import com.aspose.words.License;
+//import com.aspose.words.PdfSaveOptions;
+import org.apache.commons.collections.map.CaseInsensitiveMap;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -16,20 +21,39 @@ import java.io.InputStream;
  */
 public class OfficeUtil {
 
-    protected final static Logger logger = LoggerFactory.getLogger(OfficeUtil.class);
+    protected static final Logger logger = LoggerFactory.getLogger(OfficeUtil.class);
 
     private static boolean allowPrint = true;   //是否允许打印
     private static String passwd = "123456";    //加密密码
+    private static String licenseFile = "";    //授权文件
+    private static String fontPath = "";    //字体路径
+    static CaseInsensitiveMap mapping = new CaseInsensitiveMap();
 
-    public static void setConfig(boolean allowPrint, String passwd) {
-        OfficeUtil.allowPrint = allowPrint;
-        OfficeUtil.passwd = passwd;
+    static {
+        mapping.put("doc", "WORD");
+        mapping.put("wps", "WORD");
+        mapping.put("docx", "WORD");
+
+        mapping.put("xls", "EXCEL");
+        mapping.put("xlsx", "EXCEL");
+
+        mapping.put("csv", "EXCEL");
+        mapping.put("et", "EXCEL");
+
+        mapping.put("pdf", "PDF");
     }
 
-    private static boolean getLicense() {
+    public static void setConfig(boolean allowPrint, String passwd, String license, String fontPath) {
+        OfficeUtil.allowPrint = allowPrint;
+        OfficeUtil.passwd = passwd;
+        OfficeUtil.licenseFile = license;
+        OfficeUtil.fontPath = fontPath;
+    }
+
+    public static boolean getLicense() {
         boolean result = false;
         try {
-            String fileName = "properties/license.xml";
+            String fileName = isNullOrEmpty(licenseFile) ? "properties/license.xml" : licenseFile;
 
             InputStream isWord = OfficeUtil.class.getClassLoader()
                     .getResourceAsStream(fileName);
@@ -40,6 +64,11 @@ public class OfficeUtil {
                     .getResourceAsStream(fileName);
             com.aspose.cells.License cellLic = new com.aspose.cells.License();
             cellLic.setLicense(isCell);
+
+            InputStream pdf = OfficeUtil.class.getClassLoader()
+                    .getResourceAsStream(fileName);
+            com.aspose.pdf.License pdfLic = new com.aspose.pdf.License();
+            pdfLic.setLicense(pdf);
 
             result = true;
         } catch (Exception e) {
@@ -53,19 +82,16 @@ public class OfficeUtil {
     }
 
     private static String getPasswd() {
-        return Strings.isNullOrEmpty(passwd) ? "123456" : passwd;
+        return isNullOrEmpty(passwd) ? "123456" : passwd;
     }
+
 
     public static void excel2Pdf(String srcFile, String targetFile) throws Exception {
-        excel2Pdf(srcFile, targetFile, null);
-    }
-
-    public static void excel2Pdf(String srcFile, String targetFile, String fontPath) throws Exception{
         if (!getLicense()) {
             return;
         }
 
-        setExcelFont(fontPath);
+        setFont(fontPath);
         Workbook workbook = null;
         try {
             workbook = new Workbook(srcFile);
@@ -101,15 +127,11 @@ public class OfficeUtil {
     }
 
     public static void doc2Pdf(String srcFile, String targetFile) throws Exception {
-        doc2Pdf(srcFile, targetFile, null);
-    }
-
-    public static void doc2Pdf(String srcFile, String targetFile, String fontPath) throws Exception {
         if (!getLicense()) {
             return;
         }
         long old = System.currentTimeMillis();
-        setDocFont(fontPath);
+        setFont(fontPath);
         Document doc = null;
         try {
             doc = new Document(srcFile);
@@ -202,17 +224,14 @@ public class OfficeUtil {
     }
 
     public static void doc2Docx(String srcFile, String targetFile) throws Exception {
-        doc2Docx(srcFile, targetFile, null);
-    }
-
-    public static void doc2Docx(String srcFile, String targetFile, String fontPath) throws Exception {
         if (!getLicense()) {
             return;
         }
 
         try {
-            setDocFont(fontPath);
+            setFont(fontPath);
             Document doc = new Document(srcFile);
+
             doc.removeMacros();
             doc.save(targetFile, 20);
         } catch (Exception err) {
@@ -222,24 +241,104 @@ public class OfficeUtil {
     }
 
     //设置自定义字体路径
-    public static void setDocFont(String fontPath) throws Exception {
-        if (!Strings.isNullOrEmpty(fontPath)) {
+    public static void setFont(String fontPath) throws Exception {
+        if (!isNullOrEmpty(fontPath)) {
             FontSettings.getDefaultInstance().setFontsFolder(fontPath, false);
         }
     }
 
-    public static void setExcelFont(String fontPath) {
-        if (!Strings.isNullOrEmpty(fontPath)) {
-//            CellsHelper.setFontDir(pdfFontPath);
-            FontConfigs.setFontFolder(fontPath, false);
+    public static boolean isNullOrEmpty(String string) {
+        return string == null || string.length() == 0; // string.isEmpty() in Java 6
+    }
+
+    public static void file2Pdf(String srcFile, String targetFile) throws Exception {
+        if (isNullOrEmpty(srcFile) || isNullOrEmpty(targetFile)) {
+            logger.error("源文件、目标文件不能为空");
+            throw new Exception("源文件、目标文件不能为空");
+        }
+
+        int idx = srcFile.lastIndexOf(".");
+        if (idx <= 0) {
+            logger.error("文件名必须有后缀");
+            throw new Exception("文件名必须有后缀");
+        }
+        String suffix = srcFile.substring(idx + 1);
+
+        //生成目标路径
+        File target = new File(targetFile);
+        String targetPath = target.getParentFile().getAbsolutePath();
+        FileUtils.forceMkdir(new File(targetPath));
+
+        switch (getFileType(suffix)) {
+            case "WORD":
+                if (suffix.equalsIgnoreCase("doc") || suffix.equalsIgnoreCase("wps")) {
+                    String tempFile = targetFile.substring(0, targetFile.lastIndexOf(".")) + ".docx";
+                    doc2Docx(srcFile, tempFile);
+                    doc2Pdf(tempFile, targetFile);
+                    FileUtils.forceDelete(new File(tempFile));
+                } else {
+                    doc2Pdf(srcFile, targetFile);
+                }
+                break;
+            case "EXCEL":
+                excel2Pdf(srcFile, targetFile);
+                break;
+            case "PDF":
+                FileUtils.copyFile(new File(srcFile), new File(targetFile));
+                break;
+            default:
         }
     }
 
+    public static void addPdfWatermark() {
+        if (!getLicense()) {
+            return;
+        }
+
+        String file = "G:\\test\\01-表单定义培训.pdf";
+        // open document
+        com.aspose.pdf.Document pdfDocument = new com.aspose.pdf.Document(file);
+        // create text stamp
+        TextStamp textStamp = new TextStamp("zhangkh");
+        // set whether stamp is background
+        textStamp.setBackground(true);
+        // set origin
+        textStamp.setXIndent(100);
+        textStamp.setYIndent(100);
+        // rotate stamp
+        textStamp.setRotate(Rotation.on90);
+        // set text properties
+        textStamp.getTextState().setFont(new FontRepository().findFont("Arial"));
+        textStamp.getTextState().setFontSize(14.0F);
+        textStamp.getTextState().setFontStyle(FontStyles.Bold);
+        textStamp.getTextState().setFontStyle(FontStyles.Italic);
+        textStamp.getTextState().setForegroundColor(Color.getGreen());
+        // add stamp to particular page
+        pdfDocument.getPages().get_Item(1).addStamp(textStamp);
+
+
+        // ExStart:InfoClass
+        // iterate through all pages of PDF file
+        for (int i = 1; i <= pdfDocument.getPages().size(); i++) {
+            // add stamp to all pages of PDF file
+            pdfDocument.getPages().get_Item(i).addStamp(textStamp);
+        }
+        // ExEnd:InfoClass
+
+        // save output document
+        pdfDocument.save("G:\\test\\01-表单定义培训-3.pdf");
+
+    }
+
+    public static String getFileType(String suffix) {
+        return String.valueOf(mapping.get(suffix));
+    }
+
     public static void main(String[] args) {
-        String srcFile = "G:\\QQ Files\\livebos控件类型映射对比.xls";
-        String targetFile = "G:\\QQ Files\\livebos控件类型映射对比.pdf";
+        String srcFile = "G:\\QQ Files\\user_info_OLD.csv";
+        String targetFile = "G:\\QQ Files\\user_info_OLD.pdf";
         try {
-            excel2Pdf(srcFile, targetFile);
+            doc2Pdf(srcFile, targetFile);
         } catch (Exception e) {
             e.printStackTrace();
         }

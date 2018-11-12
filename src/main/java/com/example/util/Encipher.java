@@ -41,9 +41,9 @@ public final class Encipher {
         PrintStream out = System.out; // make sonar comfortable
         if (args.length != 2) {
             printUsage(out);
-            System.out.println(encryptPwd("docker"));
-            System.out.println(decryptPwd("k6mdRv2jrjSTmkO9Mw6e7A=="));
-            System.out.println(decrypt("pADsqZfBkG1ZD3jmCeEd4g==sO8FTzSuAfCv4A3PWFAjHg=="));
+            System.out.println(encrypt("123456"));
+//            System.out.println(decryptPwd("k6mdRv2jrjSTmkO9Mw6e7A=="));
+            System.out.println(decrypt("mDWnHKp7n70mw785neL9lQ==t2bfew/0ONzD4o/p111H89g=="));
             System.exit(1);
         }
         String methodName = args[0];

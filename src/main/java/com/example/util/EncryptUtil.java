@@ -22,7 +22,7 @@ import java.util.Date;
  * Description：DES加密解密工具类
  */
 public class EncryptUtil {
-    private static  Logger logger = LoggerFactory.getLogger(EncryptUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(EncryptUtil.class);
     private static int TOKEN_VALID_TIME = 60 * 1000; //单位是毫秒
 
     static {
@@ -171,7 +171,7 @@ public class EncryptUtil {
 
     public static void genToken(int num) {
         int cnt = num > 0 ? num : 3;
-        String userId = "lijy03";
+        String userId = "zhangkh";
         for (int i = 0; i < cnt; i++) {
             System.out.println(getToken(userId));
             try {
@@ -184,6 +184,7 @@ public class EncryptUtil {
 
     public static void main(String[] argc) {
         genToken(5);
+//        verifyToken("f14a13d4fb77e72f1442a7d12206c37950ed6e2c021b1220ea6c0247d8256330a83cb6946c244641");
     }
 
 }
