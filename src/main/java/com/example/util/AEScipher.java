@@ -1,5 +1,7 @@
 package com.example.util;
 
+import com.example.commons.encrypt.TranscodeUtil;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;

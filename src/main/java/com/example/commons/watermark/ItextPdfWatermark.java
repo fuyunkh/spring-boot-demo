@@ -1,4 +1,4 @@
-package com.example.watermark;
+package com.example.commons.watermark;
 
 import java.awt.*;
 import java.io.FileOutputStream;

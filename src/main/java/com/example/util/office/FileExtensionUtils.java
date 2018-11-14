@@ -6,11 +6,7 @@ package com.example.util.office;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
-/**
- * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>
- * @version 1.0
- * @date 2017年12月21日 下午3:10:34
- */
+
 public class FileExtensionUtils {
 
     private static String[] videoArray = new String[]{"mp4", "avi", "wma", "rmvb", "rm", "flash", "mid", "3gp"};

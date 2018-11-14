@@ -1,4 +1,4 @@
-package com.example.watermark;
+package com.example.commons.watermark;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -26,10 +26,10 @@ public class FontImage {
         g.dispose();
         g = image.createGraphics();
         // 背景透明代码结束
-//		g.fillRect(0, 0, width, height);//画出矩形区域，以便于在矩形区域内写入文字
+        g.fillRect(0, 0, width, height);   //画出矩形区域，以便于在矩形区域内写入文字
         g.setColor(new Color(220, 220, 220));   // 再换成黑色，以便于写入文字
         g.setFont(font);   // 设置画笔字体
-
+        g.rotate(0.45);
         g.translate(0, 10);
 
         g.drawString(text, 0, font.getSize());   // 画出一行字符串

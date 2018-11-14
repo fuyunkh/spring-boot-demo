@@ -1,4 +1,4 @@
-package com.example.watermark;
+package com.example.commons.watermark;
 
 import com.aspose.words.*;
 import com.aspose.words.Shape;
@@ -6,7 +6,8 @@ import com.example.util.office.OfficeUtil;
 
 import java.awt.*;
 
-public class AsposeWordWatermark implements BaseWatermark {
+
+public class AsposeWordWatermarkPic implements BaseWatermark {
 
     private double width = 60;                               //图片的宽度
     private double height = 20;                              //图片的高度
@@ -54,6 +55,7 @@ public class AsposeWordWatermark implements BaseWatermark {
                 left = left + (gap + width);
             }
 
+
             insertWatermarkIntoHeader(watermarkPara, sect, HeaderFooterType.HEADER_PRIMARY);
             insertWatermarkIntoHeader(watermarkPara, sect, HeaderFooterType.HEADER_FIRST);
             insertWatermarkIntoHeader(watermarkPara, sect, HeaderFooterType.HEADER_EVEN);
@@ -92,27 +94,32 @@ public class AsposeWordWatermark implements BaseWatermark {
         // Set name to be able to remove it afterwards
         watermark.setName("WaterMark");
 
+//        watermark.getImageData().setImage(FontImage.createImage(watermarkText));
+
+
         // Set up the text of the watermark.
+//        watermark.getTextBox().setFitShapeToText(true);
         watermark.getTextPath().setText(watermarkText);
         watermark.getTextPath().setFontFamily(getFont());
         watermark.getTextPath().setSize(getFontSize());
-//        watermark.getTextPath().setFitPath(false);
+        watermark.getTextPath().setFitPath(false);
         watermark.getTextPath().setFitShape(false);   //文字不随图形大小改变
         watermark.setWidth(width);
         watermark.setHeight(height);
+//        watermark.setStroked(false);
 
 
         // Text will be directed from the bottom-left to the top-right corner.
         watermark.setRotation(getRotation());
         // Remove the following two lines if you need a solid black text.
-        watermark.getFill().setColor(getColor()); // Try LightGray to get more Word-style watermark
-        watermark.setStrokeColor(getColor()); // Try LightGray to get more Word-style watermark
+//        watermark.getFill().setColor(getColor()); // Try LightGray to get more Word-style watermark
+//        watermark.setStrokeColor(getColor()); // Try LightGray to get more Word-style watermark
 
         // Place the watermark in the page center.
         watermark.setRelativeHorizontalPosition(RelativeHorizontalPosition.PAGE);
         watermark.setRelativeVerticalPosition(RelativeVerticalPosition.PAGE);
         watermark.setWrapType(WrapType.NONE);
-        watermark.setBehindText(false);   //水印在文字之上
+        watermark.setBehindText(true);   //水印在文字之上
 
         watermark.getFill().setOpacity(getOpacity());   //设置透明杜
         watermark.getStroke().setOpacity(getOpacity());
@@ -124,7 +131,6 @@ public class AsposeWordWatermark implements BaseWatermark {
             watermark.setLeft(left);
             watermark.setTop(top);
         }
-
 
         return watermark;
 
@@ -153,8 +159,9 @@ public class AsposeWordWatermark implements BaseWatermark {
             addWatermark(doc, watermarkText);
         }
 
-        doc.protect(ProtectionType.READ_ONLY);
-        doc.save(target);
+//        doc.protect(ProtectionType.READ_ONLY);
+        SaveOptions options = SaveOptions.createSaveOptions(SaveFormat.DOCX);
+        doc.save(target, options);
         long end = System.currentTimeMillis();
         System.out.println(end - begin);
     }

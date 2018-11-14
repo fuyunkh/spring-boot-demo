@@ -1,4 +1,4 @@
-package com.example.watermark;
+package com.example.commons.watermark;
 
 import com.aspose.words.*;
 import com.aspose.words.Shape;

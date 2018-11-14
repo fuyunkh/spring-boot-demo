@@ -73,6 +73,7 @@ public class HttpClientTools {
         RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(timeout)
                 .setConnectionRequestTimeout(timeout)
                 .setSocketTimeout(timeout).build();
+        System.out.println(requestConfig.isExpectContinueEnabled());
         requestBase.setConfig(requestConfig);
         CloseableHttpResponse response = null;
         try {

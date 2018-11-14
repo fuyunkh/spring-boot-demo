@@ -1,4 +1,6 @@
-package com.example.util;
+package com.example.commons.encrypt;
+
+import com.example.util.AEScipher;
 
 import javax.crypto.spec.IvParameterSpec;
 import java.io.PrintStream;

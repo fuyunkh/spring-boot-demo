@@ -1,4 +1,4 @@
-package com.example.watermark;
+package com.example.commons.watermark;
 
 import javax.validation.constraints.NotNull;
 import java.awt.*;

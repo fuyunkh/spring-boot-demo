@@ -1,8 +1,8 @@
 package com.example.util.office;
 
-import com.example.watermark.AsposeWordWatermark;
-import com.example.watermark.BaseWatermark;
-import com.example.watermark.ItextPdfWatermark;
+import com.example.commons.watermark.AsposeWordWatermark;
+import com.example.commons.watermark.BaseWatermark;
+import com.example.commons.watermark.ItextPdfWatermark;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -28,8 +28,8 @@ public class WatermarkUtil {
 
     public static void main(String[] args) throws Exception {
 
-        String srcFile = "G:\\test\\aa\\软件学院-张开会-201313363-18560131140 打印版.docx";
-        String target = "G:\\test\\aa\\软件学院-张开会-201313363-18560131140 打印版-1.docx";
+        String srcFile = "G:\\test\\aa\\10.docx";
+        String target = "G:\\test\\aa\\10-1.docx";
         WatermarkUtil.process(srcFile, target, "zhangkh");
     }
 }

@@ -1,4 +1,4 @@
-package com.example.util;
+package com.example.commons.encrypt;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
