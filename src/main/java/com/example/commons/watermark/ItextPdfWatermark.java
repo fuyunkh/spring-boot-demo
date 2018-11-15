@@ -21,6 +21,12 @@ import javax.validation.constraints.NotNull;
  */
 public class ItextPdfWatermark implements BaseWatermark {
 
+    private double width = 60;                               //图片的宽度
+    private double height = 30;                              //图片的高度
+
+    private int numPerLine = 3;                              //每行多少个水印
+    private int numPerColumn = 6;                            //每列多少个水印
+
     private float opacity = 0.2f;                    //内部透明度
     //    private float strokeOpacity = 0.2f;          //边界线透明度
     private float fontSize = 20;                     //字体大小,单个水印大小为150，多个水印大小为20
@@ -75,12 +81,9 @@ public class ItextPdfWatermark implements BaseWatermark {
         gs.setFillOpacity(getOpacity());
         gs.setStrokeOpacity(getOpacity());
 
-
         // 设置字体
         BaseFont baseFont = BaseFont.createFont(getFont(), fontEncode, BaseFont.EMBEDDED);
-
         int toPage = pdfStamper.getReader().getNumberOfPages();
-
         PdfContentByte content = null;
         Rectangle pageRect = null;
         for (int i = 1; i <= toPage; i++) {
@@ -93,13 +96,25 @@ public class ItextPdfWatermark implements BaseWatermark {
             content.beginText();
             content.setColorFill(new BaseColor(getColor().getRed(), getColor().getGreen(), getColor().getBlue()));
             content.setFontAndSize(baseFont, fontSize);
-            for (int x = leftMargin; x < pageRect.getWidth() - rightMargin; ) {
-                for (int y = topMargin; y < pageRect.getHeight() - bottomMargin; ) {
+
+            float pageWidth = pageRect.getWidth();
+            float pageHeight = pageRect.getHeight();
+
+            //每个水印直接的间隔距离
+            float gap = (float) (pageWidth - leftMargin - rightMargin - (numPerLine * width)) / (numPerLine - 1);
+            float gapOfColumn = (float) (pageHeight - topMargin - bottomMargin - (numPerColumn * height)) / (numPerColumn - 1);
+
+            float left = leftMargin;
+            float top = topMargin;   //由低到高
+
+            for (int x = 0; x < numPerLine; x++) {
+                for (int y = 0; y < numPerColumn; y++) {
                     // 水印文字角倾斜
-                    content.showTextAligned(Element.ALIGN_CENTER, watermark, x, y, getRotation());
-                    y += textVerticalGap;
+                    content.showTextAligned(Element.ALIGN_CENTER, watermark, left, top, getRotation());
+                    top += height + gapOfColumn;
                 }
-                x += textHorizontalGap;
+                top = topMargin;
+                left += width + gap;
             }
 
             content.endText();
