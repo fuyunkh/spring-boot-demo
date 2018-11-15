@@ -38,7 +38,7 @@ public class ItextPdfWatermark implements BaseWatermark {
 
     private int leftMargin = 60;                      //水印左边预留边距
     private int bottomMargin = 60;                    //水印底部预留边距
-    private int rightMargin = 40;                     //水印右边预留边距
+    private int rightMargin = 30;                     //水印右边预留边距
     private int topMargin = 60;                       //水印顶部预留边距
 
     private int textHorizontalGap = 80;               //文本水平间距
@@ -105,15 +105,15 @@ public class ItextPdfWatermark implements BaseWatermark {
             float gapOfColumn = (float) (pageHeight - topMargin - bottomMargin - (numPerColumn * height)) / (numPerColumn - 1);
 
             float left = leftMargin;
-            float top = topMargin;   //由低到高
+            float bottom = bottomMargin;   //由低到高
 
             for (int x = 0; x < numPerLine; x++) {
                 for (int y = 0; y < numPerColumn; y++) {
                     // 水印文字角倾斜
-                    content.showTextAligned(Element.ALIGN_CENTER, watermark, left, top, getRotation());
-                    top += height + gapOfColumn;
+                    content.showTextAligned(Element.ALIGN_CENTER, watermark, left, bottom, getRotation());
+                    bottom += height + gapOfColumn;
                 }
-                top = topMargin;
+                bottom = topMargin;
                 left += width + gap;
             }
 
